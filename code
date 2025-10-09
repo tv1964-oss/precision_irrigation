@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Μοντέλο Άρδευσης Ακριβείας</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef6f1;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 500px;
+      background: #fff;
+      margin: auto;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #1d6b4e;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background-color: #1d6b4e;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #155c3e;
+    }
+    .result {
+      margin-top: 20px;
+      background: #f2f9f6;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Μοντέλο Άρδευσης Ακριβείας</h2>
+
+    <label for="flow">1) Παροχή (L/hr):</label>
+    <input type="number" id="flow" placeholder="π.χ. 1200">
+
+    <label for="spacingSprinkler">2) Απόσταση Μπεκ (m):</label>
+    <input type="number" id="spacingSprinkler" placeholder="π.χ. 3">
+
+    <label for="spacingRow">3) Απόσταση Λάστιχο με Λάστιχο (m):</label>
+    <input type="number" id="spacingRow" placeholder="π.χ. 4">
+
+    <label for="depth">Βάθος Άρδευσης (mm):</label>
+    <input type="number" id="depth" placeholder="π.χ. 30">
+
+    <button onclick="calculateIrrigation()">Υπολογισμός</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function calculateIrrigation() {
+      const flow = parseFloat(document.getElementById('flow').value);
+      const spacingSprinkler = parseFloat(document.getElementById('spacingSprinkler').value);
+      const spacingRow = parseFloat(document.getElementById('spacingRow').value);
+      const depth = parseFloat(document.getElementById('depth').value);
+
+      if (isNaN(flow) || isNaN(spacingSprinkler) || isNaN(spacingRow) || isNaN(depth)) {
+        document.getElementById('result').innerHTML = "⚠️ Παρακαλώ συμπλήρωσε όλα τα πεδία.";
+        return;
+      }
+
+      // Εξίσωση 1: Application Rate (mm/hr)
+      const applicationRate = flow / (spacingSprinkler * spacingRow);
+
+      // Εξίσωση 2: Hours of Irrigation (hr)
+      const hours = depth / applicationRate;
+
+      document.getElementById('result').innerHTML = `
+        <strong>Αποτελέσματα:</strong><br>
+        ➤ Ρυθμός Εφαρμογής (Application Rate): ${applicationRate.toFixed(2)} mm/hr<br>
+        ➤ Ώρες Άρδευσης (Hours of Irrigation): ${hours.toFixed(2)} hr
+      `;
+    }
+  </script>
+
+</body>
+</html>
